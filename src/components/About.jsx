@@ -21,7 +21,7 @@ export default function About() {
     {
       category: "Tools",
       icon: <GitBranch size={24} />,
-      items: ["Git", "GitHub", "VS Code", "Postman", "Netlify"],
+      items: ["Git", "GitHub", "VS Code","IntelliJ IDEA", "MongoDB Compass", "Postman", "Netlify", "Vercel"],
     },
   ];
 
