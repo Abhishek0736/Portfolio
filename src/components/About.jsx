@@ -114,8 +114,11 @@ export default function About() {
     "Git": 92,
     "GitHub": 92,
     "VS Code": 96,
+    "IntelliJ IDEA": 78,
+    "MongoDB Compass": 85,
     "Postman": 85,
     "Netlify": 80,
+    "Vercel": 85,
   };
 
   useEffect(() => {

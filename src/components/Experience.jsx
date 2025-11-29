@@ -16,7 +16,7 @@ export default function Experience() {
       role: "Summer Intern - Full Stack Development",
       company: "Softpro India Computer Technologies Pvt. Ltd.",
       duration: "June 2025 - August 2025",
-      location: "Gorakhpur (On-site)",
+      location: "Noida, (On-site)",
       grade: "A+",
       color: "from-cyan-500/20 to-blue-600/20",
       borderColor: "from-cyan-400 to-blue-500",

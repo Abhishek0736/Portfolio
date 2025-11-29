@@ -16,7 +16,7 @@ export default function Projects() {
         "Secure role-based access control with JWT authentication",
         "Real-time progress monitoring and project tracking",
       ],
-      tech: ["React", "Node.js", "MongoDB", "Express.js", "Tailwind CSS"],
+      tech: ["React", "Node.js", "Express.js", "MongoDB", "Tailwind CSS"],
       impact: "Increased team productivity with streamlined workflows",
       link: "https://github.com/Abhishek0736/Role-Based-Project-Management-System",
       liveDemo: "#"
@@ -52,7 +52,7 @@ export default function Projects() {
         "Natural language intent parsing",
         "Conversational UI with command architecture",
       ],
-      tech: ["JavaScript", "Web Speech API", "HTML", "CSS"],
+      tech: ["HTML", "CSS", "JavaScript", "Web Speech API"],
       impact: "Seamless voice-based interaction for web applications",
       link: "https://github.com/Abhishek0736/Virtual-Assistant",
       liveDemo: "https://novavirtualassistant.netlify.app/"
