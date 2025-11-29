@@ -1,110 +1,121 @@
 <h1 align="center">🌐 Abhishek Kumar — Portfolio Website</h1>
 
 <p align="center">
-A visually stunning, blazing fast & developer-focused personal portfolio website built using <strong>React + TailwindCSS</strong>.
+  A modern, fast and developer-focused personal portfolio built with <strong>React</strong> and <strong>Tailwind CSS</strong>, showcasing my work as a Full Stack / MERN Developer.
 </p>
 
 <p align="center">
-  <a href="https://your-portfolio-link.com"><strong>🔗 Live Portfolio</strong></a> •
-  <a href="https://github.com/your-username/your-repo"><strong>📦 Repo</strong></a> •
-  <a href="mailto:akabhi0736@gmail.com"><strong>📩 Contact</strong></a>
+  <a href="https://abhishek-web.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=vercel" alt="Live Demo" />
+  </a>
+  <a href="https://github.com/Abhishek0736/Portfolio" target="_blank">
+    <img src="https://img.shields.io/badge/Source_Code-GitHub-181717?style=for-the-badge&logo=github" alt="GitHub Repo" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/stars/Abhishek0736/Portfolio?style=flat-square" />
+  <img src="https://img.shields.io/github/forks/Abhishek0736/Portfolio?style=flat-square" />
+  <img src="https://img.shields.io/github/license/Abhishek0736/Portfolio?style=flat-square" />
 </p>
 
 ---
 
-## ✨ Highlights
+## ✨ Overview
 
-✔ Premium UI with **Glassmorphism + Neumorphism**  
-✔ **Framer Motion** animations  
-✔ **Dark/Light Theme Switch**  
-✔ Mobile-first, ultra-responsive layout  
-✔ Real-time **Contact Form with Email API**  
-✔ **SEO & Performance Optimized**  
-✔ **Project Showcase with Filters**  
-✔ Resume Download + Quick Social Links  
-✔ Modular & scalable Code Architecture  
+This is my personal portfolio website hosted at  
+👉 **https://abhishek-web.vercel.app/**  
 
-> 🎯 Designed with a strong focus on UI/UX + Developer Branding
+It highlights my **skills, projects, internships, and experience as a MERN/Java developer**, including real-world projects like a role-based project management system, AgriTrade platform, and AI-powered collaboration tools. :contentReference[oaicite:0]{index=0}
+
+---
+
+## 🚀 Features
+
+- 🌓 Dark, modern UI with glassmorphism styling  
+- 📱 Fully responsive (mobile, tablet, desktop)  
+- ⚛️ Component-based architecture using React  
+- 🎞️ Smooth section transitions & hover animations  
+- 📂 Dedicated sections: Hero, About, Skills, Experience, Education, Projects, Contact  
+- 📄 Resume download button  
+- 🔗 External links to GitHub & LinkedIn  
 
 ---
 
 ## 🛠 Tech Stack
 
-| Category | Technologies |
-|--------|-------------|
-| **Core** | React, JavaScript, TailwindCSS |
-| **Animation** | Framer Motion |
-| **Icons** | Lucide, HeroIcons |
-| **Deployment** | Vercel / Netlify |
-| **Code Quality** | ESLint, Prettier |
+- **Frontend:** React, JavaScript, Tailwind CSS  
+- **Icons:** Lucide React  
+- **Build Tooling:** Create React App, PostCSS, Autoprefixer  
+- **Deployment:** Vercel (CI/CD via GitHub)
 
 ---
 
-## 📂 Structure
+## 🔗 Live Demo
+
+👉 **Production URL:**  
+https://abhishek-web.vercel.app/
+
+---
+
+## 📦 Getting Started (Local Development)
 
 ```bash
-src/
-├── components/
-│   ├── Hero.jsx
-│   ├── About.jsx
-│   ├── Projects.jsx
-│   ├── Skills.jsx
-│   ├── Timeline.jsx
-│   ├── Contact.jsx
-│   └── Footer.jsx
-├── assets/
-├── hooks/
-├── data/
-└── utils/
-Structured for long-term scalability
+# clone the repo
+git clone https://github.com/Abhishek0736/Portfolio.git
 
-🚀 Getting Started
-bash
-Copy code
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+cd Portfolio
+
+# install dependencies
 npm install
-npm start
-➡ Runs at: http://localhost:3002/
 
-🔧 Production Build
+# start development server
+npm start
+App will be available at:
+http://localhost:3000
+
+🏗️ Build for Production
 bash
 Copy code
 npm run build
-Deploy on:
+This creates an optimized production build in the build/ folder.
 
-Vercel (1-click deploy)
-
-Netlify
-
-GitHub Pages
-
-🧩 Roadmap
- Blog system support
-
- Admin dashboard to update projects
-
- Backend integration for analytics
-
- Certifications section
-
- Smooth page-transition effects
-
-🏅 Achievements Section (Portfolio Highlight Preview)
-md
+📂 Project Structure
+bash
 Copy code
-🏆 Built 10+ real-world full-stack projects  
-🚀 Hands-On: Java, React, Node.js, MongoDB, Spring Boot  
-🎯 Strong understanding of Data Structures, OOP & System Design
-Add more to increase credibility ⭐
+Portfolio/
+├── public/
+│   ├── index.html
+│   ├── favicon.ico
+│   └── og-image.png        # (optional social preview image)
+└── src/
+    ├── App.jsx
+    ├── index.js
+    ├── index.css
+    ├── assets/
+    │   ├── Abhishek_Kumar.pdf
+    │   └── ...
+    └── components/
+        ├── Hero.jsx
+        ├── About.jsx
+        ├── Skills.jsx
+        ├── Projects.jsx
+        ├── Experience.jsx
+        ├── Education.jsx
+        ├── Contact.jsx
+        └── Footer.jsx
+🤝 Contributing
+Suggestions and improvements are welcome.
+Feel free to open an issue or submit a pull request.
 
-💬 Testimonials (Optional)
-Coming Soon 🤝 Recruiter & Mentor Feedback
+✍️ Author
+Abhishek Kumar
 
-📞 Contact Me
-📧 Email: akabhi0736@gmail.com
-🔗 LinkedIn: https://www.linkedin.com/in/abhishek-ku0736
-🐙 GitHub: https://github.com/Abhishek0736
+Portfolio: https://abhishek-web.vercel.app/
+
+GitHub: https://github.com/Abhishek0736
+
+LinkedIn: https://www.linkedin.com/in/abhishek-ku0736/
 
 📝 License
-This project is licensed under MIT License.
+This project is licensed under the MIT License.
