@@ -11,7 +11,7 @@ import {
 import Me1 from "../assets/Me_1.jpg";
 import Me2 from "../assets/Me_2.jpg";
 import Me3 from "../assets/Me_3.jpg";
-import ResumePdf from "/public/Abhishek_Kumar_.pdf"
+import ResumePdf from "../assets/Abhishek_Kumar.pdf";
 
 export default function Hero() {
   const images = [Me1, Me2, Me3];
