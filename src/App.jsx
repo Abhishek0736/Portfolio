@@ -11,6 +11,10 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <div className="theme-root overflow-hidden">
+       {/* <audio controls>
+        <source src="/background-music.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio> */}
       <Navbar />
       <Hero />
       <About />
