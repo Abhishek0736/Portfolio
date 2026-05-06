@@ -121,25 +121,28 @@ export default function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden bg-[#060b14]/98 backdrop-blur-2xl border-t border-white/[0.05]"
+              className="lg:hidden overflow-hidden bg-[#060b14]/98 backdrop-blur-2xl border-t border-white/[0.05] relative z-[60]"
             >
               <div className="px-4 py-4 space-y-1">
                 {navLinks.map((link, i) => (
-                  <motion.a
+                  <motion.div
                     key={link.label}
-                    href={link.href}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    onClick={() => setIsOpen(false)}
-                    className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                      active === link.href.slice(1)
-                        ? "text-cyan-300 bg-cyan-500/10 border border-cyan-500/20"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
                   >
-                    {link.label}
-                  </motion.a>
+                    <a
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                        active === link.href.slice(1)
+                          ? "text-cyan-300 bg-cyan-500/10 border border-cyan-500/20"
+                          : "text-gray-400 hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      {link.label}
+                    </a>
+                  </motion.div>
                 ))}
                 <div className="pt-3 border-t border-white/[0.05] grid grid-cols-2 gap-2">
                   <a
@@ -163,7 +166,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </motion.nav>
-      <div className="h-[72px]" />
     </>
   );
 }

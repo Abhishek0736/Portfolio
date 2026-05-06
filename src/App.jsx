@@ -88,8 +88,8 @@ export default function App() {
         <div className="theme-root grid-bg overflow-x-hidden">
           <CursorGlow />
           <ScrollProgress />
-          <Navbar />
           <main>
+            <div className="h-[72px]" />
             <Hero />
             <About />
             <Skills />
@@ -101,6 +101,7 @@ export default function App() {
             <Contact />
           </main>
           <Footer />
+          <Navbar />
         </div>
       )}
     </>
