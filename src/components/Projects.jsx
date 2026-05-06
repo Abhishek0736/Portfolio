@@ -1,194 +1,187 @@
-import React from "react";
-import { ExternalLink, Github, Star, Zap, Code2 } from "lucide-react";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Github, ExternalLink, Code2, Layers, Cpu, Smartphone } from "lucide-react";
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const projects = [
+  {
+    title: "Innovative AI — Collaboration Platform",
+    desc: "A powerful MERN Stack application featuring real-time socket-based communication and integrated AI prompt engineering.",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
+    tech: ["MERN Stack", "Socket.io", "JWT Auth", "OpenAI"],
+    features: ["Real-time messaging", "Secure REST APIs", "AI Prompt generation", "Role-based Access"],
+    impact: "Built for high-concurrency real-time interactions",
+    github: "https://github.com/Abhishek0736",
+    demo: "#",
+    color: "cyan",
+  },
+  {
+    title: "Project Management System (RBAC)",
+    desc: "Enterprise-grade task management system with complex role-based access control and high-performance data handling.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+    tech: ["React.js", "Node.js", "MongoDB", "Redux"],
+    features: ["Admin/Employee Dashboards", "Task Automation", "Progress Analytics", "Activity Logs"],
+    impact: "Optimized data queries by 40% using MongoDB indexing",
+    github: "https://github.com/Abhishek0736/Role-Based-Project-Management-System",
+    demo: "#",
+    color: "violet",
+  },
+  {
+    title: "AgriTrade — Commerce Platform",
+    desc: "Full-stack agricultural trading platform bridging the gap between farmers and merchants with secure payment flows.",
+    image: "https://images.unsplash.com/photo-1592419044706-39796d40f98c?auto=format&fit=crop&q=80&w=800",
+    tech: ["Java", "Spring Boot", "React", "MySQL"],
+    features: ["Product Lifecycle", "Secure Transactions", "User Verification", "Inventory Tracking"],
+    impact: "Architected using Spring Boot for microservices scalability",
+    github: "https://github.com/Abhishek0736/Agriculture-E-Commerce-Platform",
+    demo: "#",
+    color: "pink",
+  },
+];
+
+const colorMap = {
+  cyan:   "from-cyan-500/20 to-blue-600/20 hover:shadow-cyan-500/10",
+  violet: "from-violet-500/20 to-indigo-600/20 hover:shadow-violet-500/10",
+  pink:   "from-pink-500/20 to-rose-600/20 hover:shadow-pink-500/10",
+};
+
+const badgeMap = {
+  cyan:   "bg-cyan-500/10 text-cyan-300 border-cyan-500/20",
+  violet: "bg-violet-500/10 text-violet-300 border-violet-500/20",
+  pink:   "bg-pink-500/10 text-pink-300 border-pink-500/20",
+};
 
 export default function Projects() {
-  const projects = [
-       {
-      title: "Role-Based Project Management System",
-      status: "Completed",
-      color: "from-blue-500/20 to-cyan-600/20",
-      borderColor: "from-blue-400 to-cyan-500",
-      bgGradient: "from-blue-500/10 to-cyan-500/10",
-      icon: Code2,
-      description: "Web application with admin, manager, and employee dashboards based on MERN stack for efficient task management.",
-      highlights: [
-        "40% faster task assignment through improved API handling",
-        "Secure role-based access control with JWT authentication",
-        "Real-time progress monitoring and project tracking",
-      ],
-      tech: ["React", "Node.js", "Express.js", "MongoDB", "Tailwind CSS"],
-      impact: "Increased team productivity with streamlined workflows",
-      link: "https://github.com/Abhishek0736/Role-Based-Project-Management-System",
-      liveDemo: "#"
-    },
-    {
-      title: "AgriTrade — Farm Commerce Platform",
-      status: "Completed",
-      color: "from-pink-500/20 to-rose-600/20",
-      borderColor: "from-pink-400 to-rose-500",
-      bgGradient: "from-pink-500/10 to-rose-500/10",
-      icon: Zap,
-      description: "An end-to-end e-commerce platform tailored for farmers and merchants to seamlessly trade agricultural products.",
-      highlights: [
-        "Role-based access & secure JWT authentication",
-        "Product CRUD with image upload & validation",
-        "Order & transaction history with CSV export",
-      ],
-      tech: ["Java", "Spring Boot", "React", "MySQL", "REST APIs"],
-      impact: "Enabled seamless agricultural commerce transactions",
-      link: "https://github.com/Abhishek0736/Agriculture-E-Commerce-Platform",
-      liveDemo: "#"
-    },
-    {
-      title: "Voice Assistant — Interactive Web Assistant",
-      status: "Completed",
-      color: "from-purple-500/20 to-indigo-600/20",
-      borderColor: "from-purple-400 to-indigo-500",
-      bgGradient: "from-purple-500/10 to-indigo-500/10",
-      icon: Star,
-      description: "A browser-based voice assistant that uses Web Speech APIs for speech recognition and synthesis with intent parsing.",
-      highlights: [
-        "Real-time speech recognition & synthesis",
-        "Natural language intent parsing",
-        "Conversational UI with command architecture",
-      ],
-      tech: ["HTML", "CSS", "JavaScript", "Web Speech API"],
-      impact: "Seamless voice-based interaction for web applications",
-      link: "https://github.com/Abhishek0736/Virtual-Assistant",
-      liveDemo: "https://novavirtualassistant.netlify.app/"
-    },
-  ];
-
-  const [visibleIndex, setVisibleIndex] = React.useState(-1);
-
-  React.useEffect(() => {
-    projects.forEach((_, index) => {
-      setTimeout(() => setVisibleIndex(index), index * 150);
-    });
-  }, []);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 bg-gradient-to-r from-transparent to-blue-400"></div>
-            <span className="text-blue-400 font-semibold text-sm tracking-widest">PORTFOLIO</span>
-            <div className="h-px w-8 bg-gradient-to-l from-transparent to-blue-400"></div>
-          </div>
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-pink-400 to-purple-400 bg-clip-text text-transparent mb-3">Featured Projects</h2>
-          <p className="text-gray-400 text-lg">Showcase of innovative solutions and real-world impact</p>
-        </div>
+    <section id="projects" ref={ref} className="relative py-24 px-4 sm:px-6 lg:px-8 section-border overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-violet-600/5 rounded-full blur-[120px] pointer-events-none" />
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => {
-            const IconComp = project.icon;
-            return (
-              <div
-                key={index}
-                className={`relative transition-all duration-700 group ${visibleIndex >= index ? 'animate-float-up opacity-100' : 'opacity-0 translate-y-8'}`}
-              >
-                {/* Animated background glow */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}></div>
+      <div className="relative max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="text-center mb-16"
+        >
+          <span className="section-label">Selected Work</span>
+          <h2 className="text-4xl sm:text-5xl font-black text-white mt-3 mb-4">
+            Featured <span className="gradient-text">Projects</span>
+          </h2>
+          <div className="w-16 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 mx-auto" />
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto mt-6">
+            Building robust and scalable applications with modern tech stacks.
+          </p>
+        </motion.div>
 
-                {/* Main card with enhanced animations */}
-                <div className={`relative h-full overflow-hidden rounded-2xl backdrop-blur-xl bg-gradient-to-br ${project.color} border-2 bg-gradient-to-br ${project.borderColor} shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-500 p-8 flex flex-col`}>
-                  
-                  {/* Multiple shine effects */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 bg-gradient-to-r from-transparent via-white to-transparent"></div>
-                  <div className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-transparent via-white to-transparent blur-sm transition-opacity duration-500"></div>
-
-                  <div className="relative z-10">
-                    {/* Header with icon - animated */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="inline-block">
-                          <h3 className="text-2xl font-bold text-white mb-1 group-hover:scale-105 transition-transform origin-left">
-                            {project.title}
-                          </h3>
-                        </div>
-                        <p className="text-gray-300 text-sm group-hover:text-white transition-colors">{project.description}</p>
-                      </div>
-                      <div className="w-14 h-14 rounded-lg bg-gradient-to-br ${project.borderColor} p-0.5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all ml-4 shadow-lg">
-                        <div className="w-full h-full rounded-md bg-slate-900 flex items-center justify-center group-hover:bg-slate-800">
-                          <IconComp className="text-white group-hover:text-blue-400 transition-colors" size={24} />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Status badge - animated */}
-                    <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 group-hover:bg-white/20 transition-all">
-                      <div className={`w-2.5 h-2.5 rounded-full ${project.status === "Ongoing" ? "bg-blue-400 animate-pulse" : "bg-gray-400"}`}></div>
-                      <span className={`text-xs font-bold tracking-widest ${project.status === "Ongoing" ? "text-blue-400" : "text-gray-300"}`}>
-                        {project.status}
-                      </span>
-                    </div>
-
-                    {/* Highlights - staggered animation */}
-                    <div className="mb-6">
-                      <p className="text-xs text-gray-400 font-bold mb-3 uppercase tracking-widest opacity-75 group-hover:opacity-100 transition-opacity">✨ Key Features</p>
-                      <ul className="space-y-2.5">
-                        {project.highlights.map((highlight, idx) => (
-                          <li 
-                            key={idx} 
-                            className="text-gray-300 text-sm flex items-start gap-3 group-hover:text-white transition-all group-hover:translate-x-1"
-                            style={{transitionDelay: `${idx * 50}ms`}}
-                          >
-                            <span className="w-2 h-2 bg-gradient-to-r from-blue-400 to-pink-400 rounded-full mt-1.5 flex-shrink-0 group-hover:scale-125 transition-transform"></span>
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Tech Stack - animated badges */}
-                    <div className="mb-6">
-                      <p className="text-xs text-gray-400 font-bold mb-3 uppercase tracking-widest opacity-75 group-hover:opacity-100 transition-opacity">🛠 Technology</p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech, idx) => (
-                          <span
-                            key={tech}
-                            className="px-3 py-1.5 bg-white/5 border border-white/20 text-white text-xs font-medium rounded-lg group-hover:bg-white/15 group-hover:border-blue-400/50 transition-all hover:scale-110"
-                            style={{transitionDelay: `${idx * 30}ms`}}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Impact box - animated */}
-                    <div className="mb-6 p-4 rounded-xl bg-gradient-to-r ${project.bgGradient} border border-white/10 group-hover:border-white/30 group-hover:bg-white/10 transition-all group-hover:scale-105 origin-bottom">
-                      <p className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">
-                        🎯 {project.impact}
-                      </p>
-                    </div>
-
-                    {/* Links - enhanced buttons */}
-                    <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10 group-hover:border-white/30 transition-colors">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-blue-500/30 border border-white/20 hover:border-blue-400 rounded-lg text-white hover:text-blue-300 text-sm font-bold transition-all hover:scale-110 group-hover:shadow-lg group-hover:shadow-blue-500/20"
-                      >
-                        <Github size={16} className="group-hover:rotate-12 transition-transform" /> Code
-                      </a>
-                      <a
-                        href={project.liveDemo}
-                        className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500/30 to-pink-500/30 hover:from-blue-500/50 hover:to-pink-500/50 border border-blue-400/50 hover:border-pink-400 rounded-lg text-white hover:text-pink-300 text-sm font-bold transition-all hover:scale-110 group-hover:shadow-lg group-hover:shadow-pink-500/20"
-                      >
-                        <ExternalLink size={16} className="group-hover:-rotate-12 transition-transform" /> Live
-                      </a>
-                    </div>
-                  </div>
+        {/* Project Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {projects.map((proj, i) => (
+            <motion.div
+              key={proj.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className={`group relative flex flex-col glass-card rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br ${colorMap[proj.color]} transition-all duration-500 hover:-translate-y-3`}
+            >
+              {/* Project Image */}
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  src={proj.image}
+                  alt={proj.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#060b14] via-transparent to-transparent opacity-80" />
+                
+                {/* Tech Badges on Image */}
+                <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+                  {proj.tech.slice(0, 3).map(t => (
+                    <span key={t} className="px-2.5 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white uppercase tracking-wider">
+                      {t}
+                    </span>
+                  ))}
                 </div>
               </div>
-            );
-          })}
+
+              {/* Content */}
+              <div className="p-6 sm:p-8 flex-1 flex flex-col">
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:gradient-text transition-all">
+                  {proj.title}
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+                  {proj.desc}
+                </p>
+
+                {/* Features List */}
+                <div className="mb-8">
+                  <p className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-4">Core Features</p>
+                  <div className="grid grid-cols-2 gap-y-2">
+                    {proj.features.map(f => (
+                      <div key={f} className="flex items-center gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full ${proj.color === 'cyan' ? 'bg-cyan-500' : proj.color === 'violet' ? 'bg-violet-500' : 'bg-pink-500'}`} />
+                        <span className="text-xs text-gray-300">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Impact Box */}
+                <div className="mb-8 p-4 rounded-2xl bg-white/5 border border-white/5 group-hover:border-cyan-500/20 transition-all">
+                  <p className="text-[10px] font-black text-muted uppercase tracking-[0.2em] mb-2">Technical Impact</p>
+                  <p className="text-xs font-bold text-white leading-relaxed">
+                    🎯 {proj.impact}
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-4 mt-auto">
+                  <a
+                    href={proj.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:border-white/20 transition-all"
+                  >
+                    <Github size={18} />
+                    Code
+                  </a>
+                  <a
+                    href={proj.demo}
+                    className={`flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r ${proj.color === 'cyan' ? 'from-cyan-500 to-blue-600' : proj.color === 'violet' ? 'from-violet-500 to-indigo-600' : 'from-pink-500 to-rose-600'} text-white font-semibold shadow-lg shadow-black/20 hover:scale-[1.02] transition-all`}
+                  >
+                    <ExternalLink size={18} />
+                    Demo
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* View More Call */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="mt-16 text-center"
+        >
+          <a
+            href="https://github.com/Abhishek0736"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors font-medium group"
+          >
+            Explore more projects on GitHub
+            <Github size={18} className="group-hover:scale-110 transition-transform" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

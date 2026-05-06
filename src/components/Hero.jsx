@@ -1,241 +1,332 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ArrowRight,
-  Github,
-  Linkedin,
-  Mail,
-  ChevronLeft,
-  ChevronRight,
-  Download,
-} from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Github, Linkedin, Mail, Download, ArrowDown, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Me1 from "../assets/Me_1.jpg";
 import Me2 from "../assets/Me_2.jpg";
 import Me3 from "../assets/Me_3.jpg";
 import ResumePdf from "../assets/Abhishek_Kumar.pdf";
 
-export default function Hero() {
-  const images = [Me1, Me2, Me3];
-  const [index, setIndex] = useState(0);
-  const [auto, setAuto] = useState(true);
-  const [hover, setHover] = useState(false);
-  const frameRef = useRef(null);
+/* ── Typing Effect ── */
+function TypingText() {
+  const roles = [
+    "MERN Stack Developer",
+    "Full Stack Developer",
+    "React.js Engineer",
+    "Aspiring Software Engineer",
+    "Problem Solver",
+  ];
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [forward, setForward] = useState(true);
 
   useEffect(() => {
-    if (!auto) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % images.length), 3500);
-    return () => clearInterval(t);
-  }, [auto, images.length]);
+    const current = roles[wordIdx];
+    const speed = forward ? 75 : 35;
+    const t = setTimeout(() => {
+      if (forward) {
+        if (charIdx < current.length) setCharIdx(c => c + 1);
+        else { setTimeout(() => setForward(false), 1600); }
+      } else {
+        if (charIdx > 0) setCharIdx(c => c - 1);
+        else { setForward(true); setWordIdx(w => (w + 1) % roles.length); }
+      }
+    }, speed);
+    return () => clearTimeout(t);
+  }, [charIdx, forward, wordIdx]);
 
+  return (
+    <div className="flex items-center gap-2 h-8">
+      <span className="text-cyan-300 font-semibold text-lg sm:text-xl">
+        {roles[wordIdx].slice(0, charIdx)}
+      </span>
+      <span className="typing-cursor inline-block h-6 w-0" />
+    </div>
+  );
+}
+
+/* ── Floating Orb ── */
+const Orb = ({ className }) => (
+  <div className={`absolute rounded-full blur-3xl pointer-events-none ${className}`} />
+);
+
+/* ── Stats ── */
+const stats = [
+  { value: "10+",  label: "REST APIs Built"     },
+  { value: "3+",   label: "Projects Deployed"   },
+  { value: "2",    label: "Internships"          },
+  { value: "7.0",  label: "CGPA"                },
+];
+
+/* ── Social Links ── */
+const socials = [
+  { href: "https://github.com/Abhishek0736",              icon: Github,   label: "GitHub",   color: "hover:bg-white/10 hover:border-white/30"         },
+  { href: "https://www.linkedin.com/in/abhishek-ku0736",  icon: Linkedin, label: "LinkedIn", color: "hover:bg-blue-500/10 hover:border-blue-400/40"  },
+  { href: "mailto:akabhi0736@gmail.com",                  icon: Mail,     label: "Email",    color: "hover:bg-cyan-500/10 hover:border-cyan-400/40"   },
+];
+
+export default function Hero() {
+  const images = [Me1, Me2, Me3];
+  const [imgIdx, setImgIdx] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+  const frameRef = useRef(null);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  /* Auto-cycle photos */
+  useEffect(() => {
+    if (!autoPlay) return;
+    const t = setInterval(() => setImgIdx(i => (i + 1) % images.length), 3500);
+    return () => clearInterval(t);
+  }, [autoPlay, images.length]);
+
+  /* 3-D tilt on photo */
   const handleMove = (e) => {
     const el = frameRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    const rx = -y * 8;
-    const ry = x * 10;
-    el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${hover ? 1.02 : 1})`;
+    el.style.transform = `perspective(1000px) rotateX(${-y * 10}deg) rotateY(${x * 12}deg) scale(1.02)`;
+  };
+  const handleLeave = () => {
+    if (frameRef.current)
+      frameRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
   };
 
-  const handleLeave = () => {
-    const el = frameRef.current;
-    if (!el) return;
-    el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)";
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12 } },
+  };
+  const itemVariants = {
+    hidden:  { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
   };
 
   return (
     <section
       id="home"
+      ref={ref}
       aria-label="Hero"
-      className="relative min-h-screen flex items-center pt-20 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-4 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Background decorative blobs */}
-      <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute -left-56 -top-44 w-96 h-96 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 blur-3xl mix-blend-multiply animate-float" />
-        <div className="absolute right-[-180px] bottom-[-120px] w-96 h-96 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 blur-3xl mix-blend-multiply animate-float" />
-      </div>
+      {/* Background orbs */}
+      <Orb className="w-[600px] h-[600px] -left-64 -top-32 bg-violet-600/20" />
+      <Orb className="w-[500px] h-[500px] right-[-200px] bottom-[-100px] bg-cyan-500/15" />
+      <Orb className="w-[300px] h-[300px] left-1/2 top-1/3 bg-pink-500/10" />
+
+      {/* Animated grid lines */}
+      <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        {/* Left: copy */}
-                  <div className="space-y-8 md:pr-8">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/30 backdrop-blur-md hover:border-cyan-400/60 transition-all">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
-                      </span>
-                      <span className="text-cyan-200 font-semibold text-sm">Available for Work</span>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-                    {/* Main Heading */}
-                    <div>
-                      <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-violet-400 drop-shadow-lg">
-                        Abhishek Kumar
-                      </h1>
-                      <p className="text-base sm:text-lg text-cyan-300/80 font-medium mt-3">Full Stack Developer</p>
-                    </div>
+          {/* ── LEFT: Text ── */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="space-y-7 order-2 lg:order-1"
+          >
+            {/* Available badge */}
+            <motion.div variants={itemVariants}>
+              <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-sm font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-300">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                Available for Opportunities
+              </span>
+            </motion.div>
 
-                    {/* Description */}
-                    <p className="text-lg sm:text-xl text-gray-300/90 max-w-xl leading-relaxed font-light">
-                      I craft high-performance web experiences with <span className="text-cyan-300 font-semibold">React</span>, <span className="text-blue-300 font-semibold">Node.js</span>, and <span className="text-violet-300 font-semibold">MongoDB</span>. Performance-first, design-driven, always learning.
-                    </p>
+            {/* Name */}
+            <motion.div variants={itemVariants}>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
+                <span className="text-white">Abhishek</span>
+                <br />
+                <span className="gradient-text">Kumar</span>
+              </h1>
+            </motion.div>
 
-                    <TypingRole />
+            {/* Typing */}
+            <motion.div variants={itemVariants}>
+              <TypingText />
+            </motion.div>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-wrap gap-3 pt-2">
-                      <a
-                        href="#projects"
-                        className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-500 to-violet-500 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all overflow-hidden"
-                      >
-                        <span className="relative z-10">View Work</span>
-                        <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                      </a>
+            {/* Description */}
+            <motion.p
+              variants={itemVariants}
+              className="text-base sm:text-lg text-gray-400 leading-relaxed max-w-lg"
+            >
+              Aspiring <span className="text-cyan-300 font-medium">MERN Stack Developer</span> passionate about building{" "}
+              <span className="text-violet-300 font-medium">scalable, performant</span> web applications with clean code
+              and exceptional user experience. B.Tech CSE 2026.
+            </motion.p>
 
-                      <a
-                        href="#contact"
-                        className="inline-flex items-center gap-2 px-6 py-3 border-2 border-cyan-400/50 text-white rounded-xl hover:bg-cyan-500/10 hover:border-cyan-300 transition-all font-semibold backdrop-blur-sm"
-                      >
-                        Get in Touch
-                      </a>
+            {/* CTA Buttons */}
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-violet-600 shadow-lg shadow-violet-500/30 hover:shadow-violet-500/50 hover:-translate-y-0.5 transition-all"
+              >
+                View Projects
+                <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+              <a
+                href={ResumePdf}
+                download
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white border border-white/15 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-white/25 transition-all"
+              >
+                <Download size={16} />
+                Resume
+              </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-gray-300 border border-white/10 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all"
+              >
+                Get in Touch
+              </a>
+            </motion.div>
 
-                      <a
-                        href={ResumePdf}
-                        download
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/20 text-white rounded-xl hover:bg-white/10 hover:border-white/40 transition-all font-semibold backdrop-blur-md"
-                        aria-label="Download resume"
-                      >
-                        <Download size={18} /> Resume
-                      </a>
-                    </div>
+            {/* Social Links */}
+            <motion.div variants={itemVariants} className="flex items-center gap-3">
+              {socials.map(({ href, icon: Icon, label, color }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel="noreferrer"
+                  aria-label={label}
+                  className={`p-3 rounded-xl border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all hover:-translate-y-0.5 ${color}`}
+                >
+                  <Icon size={19} />
+                </a>
+              ))}
+              <div className="h-px w-8 bg-gradient-to-r from-white/10 to-transparent" />
+              <span className="text-xs text-muted">Connect</span>
+            </motion.div>
 
-                    {/* Social Links */}
-                    <div className="flex items-center gap-3 pt-4">
-                      <a href="https://github.com/Abhishek0736" target="_blank" rel="noreferrer" className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-cyan-500/20 hover:border-cyan-400/50 transition-all hover:scale-110">
-                        <Github size={20} className="text-cyan-300" />
-                      </a>
-                      <a href="https://www.linkedin.com/in/abhishek-ku0736" target="_blank" rel="noreferrer" className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-blue-500/20 hover:border-blue-400/50 transition-all hover:scale-110">
-                        <Linkedin size={20} className="text-blue-300" />
-                      </a>
-                      <a href="mailto:akabhi0736@gmail.com" className="p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-violet-500/20 hover:border-violet-400/50 transition-all hover:scale-110">
-                        <Mail size={20} className="text-violet-300" />
-                      </a>
-                    </div>
-                  </div>
+            {/* Stats */}
+            <motion.div
+              variants={itemVariants}
+              className="grid grid-cols-4 gap-4 pt-2 border-t border-white/[0.06]"
+            >
+              {stats.map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <p className="text-xl sm:text-2xl font-black gradient-text">{value}</p>
+                  <p className="text-[10px] sm:text-xs text-muted mt-0.5 leading-tight">{label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
 
-                  {/* Right: portrait with frames + carousel */}
-          <div className="flex items-center justify-center">
+          {/* ── RIGHT: Photo ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center justify-center order-1 lg:order-2"
+          >
             <div
               ref={frameRef}
               onMouseMove={handleMove}
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => {
-                setHover(false);
-                handleLeave();
-              }}
-              className="relative w-[320px] h-[320px] md:w-[420px] md:h-[420px] lg:w-[480px] lg:h-[480px]"
+              onMouseLeave={handleLeave}
+              className="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] lg:w-[440px] lg:h-[440px]"
+              style={{ transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1)" }}
             >
-              {/* Layered frames */}
-              <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-cyan-500 to-blue-500 opacity-10 blur-sm transform rotate-3" />
-              <div className="absolute -inset-8 rounded-3xl border-2 border-white/6 transform rotate-3 opacity-30" />
+              {/* Glow ring */}
+              <div className="absolute -inset-6 rounded-full bg-gradient-to-br from-cyan-500/20 via-violet-600/20 to-pink-500/20 blur-2xl animate-pulse-glow" />
 
-              {/* image frame */}
-              <div className="absolute inset-0 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl img-shine">
+              {/* Rotating dashed ring */}
+              <div
+                className="absolute -inset-3 rounded-full border border-dashed border-violet-500/30 animate-rotate-slow"
+                style={{ animationDuration: "25s" }}
+              />
+
+              {/* Orbit dots */}
+              {[
+                { bg: "bg-cyan-400", delay: "0s" },
+                { bg: "bg-pink-400", delay: "-4s" },
+                { bg: "bg-violet-400", delay: "-8s" },
+              ].map(({ bg, delay }, i) => (
+                <div
+                  key={i}
+                  className="absolute w-3 h-3 rounded-full top-1/2 left-1/2 -mt-1.5 -ml-1.5"
+                  style={{ animation: `orbit 12s linear ${delay} infinite` }}
+                >
+                  <div className={`w-3 h-3 rounded-full ${bg} shadow-lg`} />
+                </div>
+              ))}
+
+              {/* Photo frame */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
                 {images.map((src, i) => (
                   <img
                     key={i}
                     src={src}
-                    alt={`Abhishek photo ${i + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
-                      i === index ? "opacity-100 scale-100" : "opacity-0 scale-110"
-                    }`} 
+                    alt={`Abhishek Kumar photo ${i + 1}`}
                     draggable={false}
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                      i === imgIdx ? "opacity-100 scale-100" : "opacity-0 scale-110"
+                    }`}
                   />
                 ))}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-40" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#060b14]/60 via-transparent to-transparent" />
+                {/* Bottom badge */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full glass text-xs font-semibold text-white border border-white/10 whitespace-nowrap">
+                  MERN Stack Developer
+                </div>
               </div>
 
-              {/* controls */}
+              {/* Carousel controls */}
               <button
-                onClick={() => {
-                  setIndex((i) => (i - 1 + images.length) % images.length);
-                  setAuto(false);
-                }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full glass shadow-md hover:scale-110"
-                aria-label="Previous image"
+                onClick={() => { setImgIdx(i => (i - 1 + images.length) % images.length); setAutoPlay(false); }}
+                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full glass border border-white/10 hover:border-white/20 hover:scale-110 transition-all"
+                aria-label="Previous photo"
               >
-                <ChevronLeft />
+                <ChevronLeft size={16} className="text-white" />
               </button>
               <button
-                onClick={() => {
-                  setIndex((i) => (i + 1) % images.length);
-                  setAuto(false);
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full glass shadow-md hover:scale-110"
-                aria-label="Next image"
+                onClick={() => { setImgIdx(i => (i + 1) % images.length); setAutoPlay(false); }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full glass border border-white/10 hover:border-white/20 hover:scale-110 transition-all"
+                aria-label="Next photo"
               >
-                <ChevronRight />
+                <ChevronRight size={16} className="text-white" />
               </button>
 
-              {/* indicators */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {/* Indicators */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
                 {images.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => {
-                      setIndex(i);
-                      setAuto(false);
-                    }}
-                    aria-label={`Show image ${i + 1}`}
-                    className={`h-2.5 rounded-full transition-all ${
-                      i === index ? "w-8 bg-gradient-to-r from-cyan-400 to-blue-400 shadow-md" : "w-2.5 bg-white/30"
+                    onClick={() => { setImgIdx(i); setAutoPlay(false); }}
+                    aria-label={`Photo ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === imgIdx ? "w-6 bg-cyan-400" : "w-1.5 bg-white/20"
                     }`}
                   />
                 ))}
               </div>
-
-              {/* small particles */}
-              <span className="particle" style={{ left: '12%', top: '10%', background: 'rgba(6,182,212,0.8)' }} />
-              <span className="particle" style={{ right: '12%', bottom: '20%', background: 'rgba(99,102,241,0.8)' }} />
-              <span className="particle" style={{ left: '68%', top: '18%', background: 'rgba(236,72,153,0.85)' }} />
             </div>
-          </div>
+          </motion.div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted"
+        >
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowDown size={16} className="text-cyan-400" />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function TypingRole() {
-  const roles = ["Full Stack Developer", "MERN Engineer", "UI-focused", "Performance-minded"];
-  const [wordIndex, setWordIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [forward, setForward] = useState(true);
-
-  useEffect(() => {
-    const current = roles[wordIndex];
-    const speed = forward ? 80 : 40;
-    const t = setTimeout(() => {
-      if (forward) {
-        if (charIndex < current.length) setCharIndex((c) => c + 1);
-        else setForward(false);
-      } else {
-        if (charIndex > 0) setCharIndex((c) => c - 1);
-        else {
-          setForward(true);
-          setWordIndex((w) => (w + 1) % roles.length);
-        }
-      }
-    }, speed);
-    return () => clearTimeout(t);
-  }, [charIndex, forward, wordIndex, roles]);
-
-  return (
-    <div className="mt-2 flex items-center gap-3">
-      <span className="text-sm text-cyan-300 font-medium">{roles[wordIndex].slice(0, charIndex)}</span>
-      <span className="typing-cursor" style={{ height: 18 }} />
-      <div className="h-1 w-20 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 animate-pulse" />
-    </div>
   );
 }

@@ -1,136 +1,169 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Code2 } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import ResumePdf from "../assets/Abhishek_Kumar.pdf";
 
-// Custom Logo Component
-const Logo = () => {
-  return (
-    <a href="#home" className="flex items-center gap-2 group">
-      {/* Logo Icon - Modern & Professional */}
-      <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 p-0.5 group-hover:shadow-lg group-hover:shadow-purple-500/50 transition-all duration-300 transform group-hover:scale-110">
-        <div className="w-full h-full rounded-lg bg-slate-900 flex items-center justify-center">
-          <div className="relative w-full h-full flex items-center justify-center">
-            {/* Stylized 'A' */}
-            <span className="font-black text-lg bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-              A
-            </span>
-            {/* Accent dots */}
-            <div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-pink-400 rounded-full"></div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Logo Text */}
-      <div className="hidden sm:flex flex-col">
-        <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-none">
-          Abhishek
-        </span>
-        <span className="text-xs text-gray-400 font-semibold">Developer</span>
-      </div>
-    </a>
-  );
-};
+const navLinks = [
+  { label: "Home",     href: "#home"     },
+  { label: "About",    href: "#about"    },
+  { label: "Skills",   href: "#skills"   },
+  { label: "Experience", href: "#experience" },
+  { label: "Projects", href: "#projects" },
+  { label: "Education",href: "#education"},
+  { label: "Contact",  href: "#contact"  },
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen]   = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive]   = useState("home");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+      // active section detection
+      const sections = navLinks.map(l => l.href.slice(1));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && window.scrollY >= el.offsetTop - 120) {
+          setActive(sections[i]);
+          break;
+        }
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Experience", href: "#experience" },
-    { label: "Projects", href: "#projects" },
-    { label: "Education", href: "#education" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-slate-900/95 backdrop-blur-xl shadow-2xl shadow-purple-500/10 border-b border-purple-500/20"
-            : "bg-gradient-to-r from-slate-900/80 via-purple-900/50 to-slate-900/80 backdrop-blur-md border-b border-purple-500/10"
+            ? "bg-[#060b14]/90 backdrop-blur-2xl shadow-2xl shadow-violet-900/10 border-b border-white/[0.06]"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           {/* Logo */}
-          <Logo />
+          <a href="#home" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10">
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500 via-violet-600 to-pink-500 opacity-90 group-hover:opacity-100 transition-opacity animate-pulse-glow" />
+              <div className="absolute inset-[2px] rounded-[10px] bg-[#060b14] flex items-center justify-center">
+                <span className="text-sm font-black gradient-text">AK</span>
+              </div>
+            </div>
+            <div className="hidden sm:block">
+              <p className="text-sm font-bold text-white leading-none">Abhishek Kumar</p>
+              <p className="text-[10px] text-muted font-medium tracking-widest uppercase mt-0.5">MERN Developer</p>
+            </div>
+          </a>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link, index) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 group ${
-                  index === 0
-                    ? "text-purple-300"
-                    : "text-gray-300 hover:text-purple-300"
-                }`}
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 group-hover:w-8 transition-all duration-300"></span>
-              </a>
-            ))}
-          </div>
-
-          {/* CTA Button + Mobile Menu */}
-          <div className="flex items-center gap-4">
-            {/* Download CV Button - Desktop */}
-            <a
-              href="#contact"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 transform hover:scale-105"
-            >
-              <Code2 size={16} />
-              Hire Me
-            </a>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-300 hover:text-purple-300 hover:bg-purple-500/10 transition-all duration-300"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-t border-purple-500/20 px-4 py-4 space-y-1 animate-in fade-in slide-in-from-top-2">
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="block px-4 py-3 text-gray-300 hover:text-purple-300 hover:bg-purple-500/10 transition-all duration-300 text-sm font-medium rounded-lg"
-                onClick={() => setIsOpen(false)}
+                className={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                  active === link.href.slice(1)
+                    ? "text-cyan-300 bg-cyan-500/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                }`}
               >
                 {link.label}
+                {active === link.href.slice(1) && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-cyan-400"
+                  />
+                )}
               </a>
             ))}
-            <div className="pt-2 border-t border-purple-500/20 mt-2">
-              <a
-                href="#contact"
-                className="block px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-semibold rounded-lg text-center hover:shadow-lg transition-all duration-300"
-                onClick={() => setIsOpen(false)}
-              >
-                Hire Me
-              </a>
-            </div>
           </div>
-        )}
-      </nav>
 
-      {/* Navbar Spacer */}
-      <div className="h-16"></div>
+          {/* CTA */}
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href={ResumePdf}
+              download
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 transition-all hover:-translate-y-0.5"
+            >
+              <Download size={15} />
+              Resume
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border border-white/10 text-gray-300 hover:text-white hover:border-white/20 hover:bg-white/5 transition-all"
+            >
+              Hire Me
+            </a>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:hidden overflow-hidden bg-[#060b14]/98 backdrop-blur-2xl border-t border-white/[0.05]"
+            >
+              <div className="px-4 py-4 space-y-1">
+                {navLinks.map((link, i) => (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    onClick={() => setIsOpen(false)}
+                    className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                      active === link.href.slice(1)
+                        ? "text-cyan-300 bg-cyan-500/10 border border-cyan-500/20"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+                <div className="pt-3 border-t border-white/[0.05] grid grid-cols-2 gap-2">
+                  <a
+                    href={ResumePdf}
+                    download
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-cyan-600"
+                  >
+                    <Download size={14} /> Resume
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center py-3 rounded-xl text-sm font-semibold border border-white/10 text-gray-300"
+                  >
+                    Hire Me
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+      <div className="h-[72px]" />
     </>
   );
 }
