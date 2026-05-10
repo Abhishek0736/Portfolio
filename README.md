@@ -71,39 +71,31 @@ npm install
 
 # start development server
 npm start
-App will be available at:
-http://localhost:3000
+```
+App will be available at: [http://localhost:3000](http://localhost:3000)
 
-🏗️ Build for Production
-bash
-Copy code
+## 🏗️ Build for Production
+
+```bash
 npm run build
-This creates an optimized production build in the build/ folder.
+```
+This creates an optimized production build in the `build/` folder.
 
-📂 Project Structure
-bash
-Copy code
+## 📂 Project Structure
+
+```bash
 Portfolio/
 ├── public/
 │   ├── index.html
 │   ├── favicon.ico
-│   └── og-image.png        # (optional social preview image)
+│   └── og-image.png        # Social preview image
 └── src/
     ├── App.jsx
     ├── index.js
     ├── index.css
-    ├── assets/
-    │   ├── Abhishek_Kumar.pdf
-    │   └── ...
-    └── components/
-        ├── Hero.jsx
-        ├── About.jsx
-        ├── Skills.jsx
-        ├── Projects.jsx
-        ├── Experience.jsx
-        ├── Education.jsx
-        ├── Contact.jsx
-        └── Footer.jsx
+    ├── assets/             # Images and PDFs
+    └── components/         # UI Components
+```
 🤝 Contributing
 Suggestions and improvements are welcome.
 Feel free to open an issue or submit a pull request.
